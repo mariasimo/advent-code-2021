@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { readFileSync } from "fs";
 
 type ReadInputProps = {
@@ -32,4 +33,14 @@ export const readInputAsArray = ({
 
 export const convertToNumber = (string: string): number => {
   return +string;
+};
+
+export const logResults = (day: number, results: number[]): void => {
+  const title = chalk.bold.hex("#ffc413");
+  const text = chalk.hex("#ffc413");
+
+  console.log(title(`\n⭐️ DAY ${day}:`));
+  results.forEach((result, index) => {
+    console.log(text(`   Part ${index + 1} Solution: ${result}`));
+  });
 };
