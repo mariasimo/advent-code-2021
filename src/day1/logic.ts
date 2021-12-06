@@ -22,7 +22,8 @@ export const countTimesDepthIncrease = (
 
 export const mapArrayInSum = (measurementsInput: number[]): number[] => {
   return measurementsInput.reduce((acc: number[], m, index, arr) => {
-    const sum = m + arr[index + 1] + arr[index + 2];
+    const sum = arr.slice(index, index + 3).reduce((acc, cu) => acc + cu);
+
     if (arr[index + 2]) {
       acc.push(sum);
     }
