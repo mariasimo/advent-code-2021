@@ -3,9 +3,11 @@ import {
   countTimesDepthIncrease,
   mapArrayInSum,
 } from "./utils";
-import { readInputAsArray } from "../utils/index";
+import { convertToNumber, readInputAsArray } from "../utils/index";
 
-const input = readInputAsArray(1);
+const input: number[] = readInputAsArray({ dayNumber: 1 }).map((item) =>
+  convertToNumber(item)
+);
 
 describe("Day 1: Sonar Sweep", () => {
   describe("Part 1", () => {
@@ -22,15 +24,15 @@ describe("Day 1: Sonar Sweep", () => {
     });
     describe("Count depth increase", () => {
       test("Should count times an item in array is higher than the previous one", () => {
-        expect(countTimesDepthIncrease(["5", "10", "20", "30"])).toBe(3);
+        expect(countTimesDepthIncrease([5, 10, 20, 30])).toBe(3);
       });
       test("Should count times an item in array is higher than the previous one", () => {
-        expect(countTimesDepthIncrease(["5", "1", "200", "30"])).toBe(1);
+        expect(countTimesDepthIncrease([5, 1, 200, 30])).toBe(1);
       });
     });
     describe("Should return correct solution", () => {
       test("Should count times an item in array is higher than the previous one", () => {
-        expect(countTimesDepthIncrease(["5", "10", "20", "30"])).toBe(3);
+        expect(countTimesDepthIncrease([5, 10, 20, 30])).toBe(3);
       });
       test("Should count times an item in array is higher than the previous one", () => {
         expect(countTimesDepthIncrease(input)).toBe(1482);
@@ -43,6 +45,16 @@ describe("Day 1: Sonar Sweep", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const output = [6, 9, 12, 15, 18, 21, 24, 27];
         expect(mapArrayInSum(input)).toStrictEqual(output);
+      });
+    });
+    describe("Array mapping", () => {
+      test("Map array in the sums of is items in groups of three", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const output = [6, 9, 12, 15, 18, 21, 24, 27];
+        expect(mapArrayInSum(input)).toStrictEqual(output);
+      });
+      test("Should return correct solution for input", () => {
+        expect(countTimesDepthIncrease(mapArrayInSum(input))).toBe(1518);
       });
     });
   });

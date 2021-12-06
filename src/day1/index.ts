@@ -1,9 +1,15 @@
-import { readInputAsArray } from "../utils/index";
+import { convertToNumber, readInputAsArray } from "../utils";
 import { countTimesDepthIncrease, mapArrayInSum } from "./utils";
 
-const input = readInputAsArray(1);
-const output = countTimesDepthIncrease(input);
+const input: number[] = readInputAsArray({ dayNumber: 1 }).map((item) =>
+  convertToNumber(item)
+);
 
-console.log(mapArrayInSum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+const outputPart1 = countTimesDepthIncrease(input);
+const outputPart2 = countTimesDepthIncrease(mapArrayInSum(input));
 
-console.log(`Part 1 Solution -> ${output}`);
+console.log(`DAY 1:`);
+console.log(`Part 1 Solution -> ${outputPart1}`);
+console.log(`Part 2 Solution -> ${outputPart2}`);
+
+export { outputPart1, outputPart2 };

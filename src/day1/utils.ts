@@ -13,10 +13,9 @@ export const checkDepthChange = (
 };
 
 export const countTimesDepthIncrease = (
-  measurementsInput: string[]
+  measurementsInput: number[]
 ): number => {
   return measurementsInput
-    .filter(Boolean)
     .map((m, index, arr) => checkDepthChange(+m, +arr[index + 1]))
     .filter((m) => m === "increased").length;
 };
