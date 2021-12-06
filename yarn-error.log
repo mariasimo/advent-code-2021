@@ -1,0 +1,39 @@
+Arguments: 
+  /Users/mariasimo/.nvm/versions/node/v16.3.0/bin/node /Users/mariasimo/.nvm/versions/node/v16.3.0/bin/yarn add -D jest
+
+PATH: 
+  /Users/mariasimo/.nvm/versions/node/v16.3.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/mariasimo/.fig/bin:/Applications/Postgres.app/Contents/Versions/13/bin
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  16.3.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EPERM: operation not permitted, open '/Users/mariasimo/.Trash/package.json'
+
+npm manifest: 
+  {
+    "name": "advent-code-2021",
+    "version": "1.0.0",
+    "description": "Advent of Code 2021 <adventofcode.com/2021>",
+    "main": "index.js",
+    "scripts": {
+      "test": "jest"
+    },
+    "keywords": [
+      "javascript"
+    ],
+    "author": "María Simó",
+    "license": "ISC"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

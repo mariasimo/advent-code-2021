@@ -1,0 +1,17 @@
+{
+  "name": "advent-code-2021",
+  "version": "1.0.0",
+  "description": "Advent of Code 2021 <adventofcode.com/2021>",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "María Simó",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.4.3"
+  }
+}
