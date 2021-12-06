@@ -1,6 +1,5 @@
 import { convertToNumber, readInputAsArray, logResults } from "../utils";
 import { countTimesDepthIncrease, mapArrayInSum } from "./logic";
-import chalk from "chalk";
 
 const input: number[] = readInputAsArray({ dayNumber: 1 }).map((item) =>
   convertToNumber(item)

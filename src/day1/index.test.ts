@@ -2,7 +2,7 @@ import {
   checkDepthChange,
   countTimesDepthIncrease,
   mapArrayInSum,
-} from "./utils";
+} from "./logic";
 import { convertToNumber, readInputAsArray } from "../utils/index";
 
 const input: number[] = readInputAsArray({ dayNumber: 1 }).map((item) =>
