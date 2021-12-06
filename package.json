@@ -3,22 +3,30 @@
   "version": "1.0.0",
   "description": "Advent of Code 2021 <adventofcode.com/2021>",
   "main": "index.js",
-  "type": "module",
   "config": {
     "day": "1"
   },
   "scripts": {
     "test": "jest",
     "develop": "jest --watch src/day$npm_package_config_day/index.test.js",
-    "start": "node src/day$npm_package_config_day"
+    "build": "tsc --build",
+    "start": "node src/day$npm_package_config_day",
+    "start:dev": "ts-node build/day$npm_package_config_day"
   },
   "keywords": [
-    "javascript"
+    "javascript",
+    "typescript",
+    "node"
   ],
   "author": "María Simó",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.11",
+    "@types/react": "^17.0.37",
     "jest": "^27.4.3",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
   }
 }
