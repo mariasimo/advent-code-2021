@@ -10,7 +10,7 @@
     "test": "jest",
     "develop": "jest --watch src/day$npm_package_config_day/index.test.js",
     "build": "tsc --build",
-    "start": "node src/day$npm_package_config_day",
+    "start": "npm run build && node build/day$npm_package_config_day",
     "start:dev": "ts-node-dev --respawn --transpile-only --quiet --clear src/day$npm_package_config_day"
   },
   "keywords": [
