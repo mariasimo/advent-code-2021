@@ -36,8 +36,10 @@ export const convertToNumber = (string: string): number => {
 export const logResults = (day: number, results: number[]): void => {
   const title = chalk.bold.hex('#ffc413');
   const text = chalk.hex('#ffc413');
+  const numberOfStars = results.map((el) => el).length;
+  const stars = [...Array(numberOfStars).keys()].map((_) => '⭐️').join('');
 
-  console.log(title(`\n⭐️ DAY ${day}:`));
+  console.log(title(`\n${stars} DAY ${day}:`));
   results.forEach((result, index) => {
     console.log(text(`   Part ${index + 1} Solution: ${result}`));
   });
