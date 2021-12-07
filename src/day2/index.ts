@@ -18,5 +18,5 @@ const destinationPart2 = followCommandsWithAim(commands, position);
 const outputPart1 = getPositionProduct(destinationPart1);
 const outputPart2 = getPositionProduct(destinationPart2);
 
-logResults(1, [outputPart1, outputPart2]);
+logResults(2, [outputPart1, outputPart2]);
 export { outputPart1, outputPart2 };
