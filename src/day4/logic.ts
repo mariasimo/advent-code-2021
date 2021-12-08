@@ -67,10 +67,14 @@ export const isColumnComplete = (board: FilteredBoard): boolean => {
 export const playBingo = (
   boards: (Board | FilteredBoard)[],
   randomNumbers: number[],
-): Maybe<{ lastNumberPlayed: number; winnerBoard: FilteredBoard }> => {
+  winnerOrLoser: 'winner' | 'loser',
+): Maybe<{
+  lastNumberPlayed: number;
+  board: FilteredBoard;
+}> => {
   const currentNumber = randomNumbers[0];
 
-  const filteredBoards = boards.map((board) => {
+  let filteredBoards = boards.map((board) => {
     return crossOutNumber(board, currentNumber);
   });
 
@@ -78,25 +82,42 @@ export const playBingo = (
     (board) => isRowComplete(board) || isColumnComplete(board),
   );
 
-  if (winnerBoard) {
-    return { lastNumberPlayed: currentNumber, winnerBoard };
+  if (winnerOrLoser === 'winner') {
+    if (winnerBoard) {
+      return {
+        lastNumberPlayed: currentNumber,
+        board: winnerBoard,
+      };
+    }
+  }
+  if (winnerBoard && winnerOrLoser === 'loser') {
+    const loserBoardIsFound = filteredBoards.length === 1;
+
+    if (loserBoardIsFound) {
+      return {
+        lastNumberPlayed: currentNumber,
+        board: filteredBoards[0],
+      };
+    }
+    filteredBoards = filteredBoards.filter(
+      (board) => !isRowComplete(board) && !isColumnComplete(board),
+    );
   }
 
   const restOfNumbers = randomNumbers.slice(1);
+
   if (restOfNumbers.length) {
-    return playBingo(filteredBoards, restOfNumbers);
+    return playBingo(filteredBoards, restOfNumbers, winnerOrLoser);
   }
 };
 
 export const getBingoScore = (
-  boards: (Board | FilteredBoard)[],
-  randomNumbers: number[],
+  lastNumberPlayed: number,
+  board: FilteredBoard,
 ): number => {
-  const gameResult = playBingo(boards, randomNumbers);
-
-  const boardScore: number = (gameResult?.winnerBoard ?? [])
+  const boardScore: number = board
     .flat()
     .reduce((total: number, item) => (item ? total + item : total), 0);
 
-  return boardScore * (gameResult?.lastNumberPlayed ?? 1);
+  return boardScore * lastNumberPlayed;
 };

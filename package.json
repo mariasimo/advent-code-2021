@@ -8,7 +8,7 @@
   },
   "scripts": {
     "develop": "jest --watch src/day$npm_package_config_day/index.test.js",
-    "solution:dev": "ts-node-dev --respawn --transpile-only --quiet --clear src/day$npm_package_config_day",
+    "solution:dev": "ts-node-dev --respawn --quiet src/day$npm_package_config_day",
     "solutions:log": "ts-node-dev build/src",
     "plop": "plop --plopfile scripts/plop/plopfile.js"
   },

@@ -15,6 +15,8 @@ const inputExample: string[] = readInputAsArray({
 
 const outputExample = parseInput(inputExample);
 const { randomNumbers, boards } = outputExample;
+const winnerGameResult = playBingo(boards, randomNumbers, 'winner');
+const loserGameResult = playBingo(boards, randomNumbers, 'loser');
 
 const board = boards[0];
 
@@ -46,6 +48,13 @@ const winnerBoard = [
   [22, null, 13, 6, null],
   [null, null, 12, 3, null],
 ];
+const loserBoard = [
+  [3, 15, null, null, 22],
+  [null, 18, null, null, null],
+  [19, 8, null, 25, null],
+  [20, null, null, null, null],
+  [null, null, null, 12, 6],
+];
 
 describe('Day:Giant Squid', () => {
   describe('Generic', () => {
@@ -70,43 +79,63 @@ describe('Day:Giant Squid', () => {
       });
     });
   });
+
+  describe('Is Row Complete', () => {
+    test('Should detect when a board has a entire row crossed out', () => {
+      expect(isRowComplete(board)).toEqual(false);
+    });
+    test('Should detect when a board has a entire row crossed out', () => {
+      expect(isRowComplete(boardWithRowComplete)).toEqual(true);
+    });
+  });
+  describe('Is Column Complete', () => {
+    test('Should detect when a board has a entire column crossed out', () => {
+      expect(isColumnComplete(board)).toEqual(false);
+    });
+    test('Should detect when a board has a entire column crossed out', () => {
+      expect(isColumnComplete(boardWithColumnComplete)).toEqual(true);
+    });
+  });
+  describe('Cross out numbers', () => {
+    test('Should remove picked number of board', () => {
+      expect(crossOutNumber(board, 1)).toEqual(filteredBoard);
+    });
+  });
+  describe('Get final score', () => {
+    test('Should return correct final score', () => {
+      expect(
+        getBingoScore(
+          winnerGameResult?.lastNumberPlayed ?? 1,
+          winnerGameResult?.board ?? [],
+        ),
+      ).toStrictEqual(4512);
+    });
+    test('Should return correct final score', () => {
+      expect(
+        getBingoScore(
+          loserGameResult?.lastNumberPlayed ?? 1,
+          loserGameResult?.board ?? [],
+        ),
+      ).toStrictEqual(1924);
+    });
+  });
   describe('Part 1', () => {
-    describe('Is Row Complete', () => {
-      test('Should detect when a board has a entire row crossed out', () => {
-        expect(isRowComplete(board)).toEqual(false);
-      });
-      test('Should detect when a board has a entire row crossed out', () => {
-        expect(isRowComplete(boardWithRowComplete)).toEqual(true);
-      });
-      describe('Is Column Complete', () => {
-        test('Should detect when a board has a entire column crossed out', () => {
-          expect(isColumnComplete(board)).toEqual(false);
-        });
-        test('Should detect when a board has a entire column crossed out', () => {
-          expect(isColumnComplete(boardWithColumnComplete)).toEqual(true);
-        });
-      });
-    });
-    describe('Cross out numbers', () => {
-      test('Should remove picked number of board', () => {
-        expect(crossOutNumber(board, 1)).toEqual(filteredBoard);
-      });
-    });
-    describe('Play bingo', () => {
-      const gameResult = playBingo(boards, randomNumbers);
+    describe('Win bingo', () => {
       test('Should return an object with "lastNumberPlayed" property in it', () => {
-        expect(gameResult).toHaveProperty('lastNumberPlayed');
+        expect(winnerGameResult).toHaveProperty('lastNumberPlayed');
       });
-      test('Should return an object with "winnerBoard" property in it', () => {
-        expect(gameResult).toHaveProperty('winnerBoard');
+      test('Should return an object with "board" property in it', () => {
+        expect(winnerGameResult).toHaveProperty('board');
       });
       test('Should return correct winner board', () => {
-        expect(gameResult?.winnerBoard).toStrictEqual(winnerBoard);
+        expect(winnerGameResult?.board).toStrictEqual(winnerBoard);
       });
     });
-    describe('Get final score', () => {
-      test('Should return correct final score', () => {
-        expect(getBingoScore(boards, randomNumbers)).toStrictEqual(4512);
+  });
+  describe('Part 2', () => {
+    describe('Lose bingo', () => {
+      test('Should return correct loser board', () => {
+        expect(loserGameResult?.board).toStrictEqual(loserBoard);
       });
     });
   });
