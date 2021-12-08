@@ -1,6 +1,5 @@
 import { Board, FilteredBoard, Row } from './types';
-import { readInputAsArray } from '../utils';
-import { Maybe } from '../day3/types';
+import { Maybe } from './types';
 
 const BOARD_LENGTH = 5;
 
@@ -82,33 +81,26 @@ export const playBingo = (
     (board) => isRowComplete(board) || isColumnComplete(board),
   );
 
-  if (winnerOrLoser === 'winner') {
-    if (winnerBoard) {
+  if (winnerBoard) {
+    if (winnerOrLoser === 'winner') {
       return {
         lastNumberPlayed: currentNumber,
         board: winnerBoard,
       };
     }
-  }
-  if (winnerBoard && winnerOrLoser === 'loser') {
-    const loserBoardIsFound = filteredBoards.length === 1;
+    if (winnerOrLoser === 'loser') {
+      const loserBoardIsFound = filteredBoards.length === 1;
 
-    if (loserBoardIsFound) {
-      return {
-        lastNumberPlayed: currentNumber,
-        board: filteredBoards[0],
-      };
+      if (loserBoardIsFound) {
+        return {
+          lastNumberPlayed: currentNumber,
+          board: filteredBoards[0],
+        };
+      }
     }
-    filteredBoards = filteredBoards.filter(
-      (board) => !isRowComplete(board) && !isColumnComplete(board),
-    );
   }
 
-  const restOfNumbers = randomNumbers.slice(1);
-
-  if (restOfNumbers.length) {
-    return playBingo(filteredBoards, restOfNumbers, winnerOrLoser);
-  }
+  return playNextNumber(filteredBoards, randomNumbers, winnerOrLoser);
 };
 
 export const getBingoScore = (
@@ -121,3 +113,18 @@ export const getBingoScore = (
 
   return boardScore * lastNumberPlayed;
 };
+
+function playNextNumber(
+  filteredBoards: FilteredBoard[],
+  randomNumbers: number[],
+  winnerOrLoser: 'winner' | 'loser',
+) {
+  const remainingNumbers = randomNumbers.slice(1);
+  const remainingBoards = filteredBoards.filter(
+    (board) => !isRowComplete(board) && !isColumnComplete(board),
+  );
+
+  if (remainingNumbers.length) {
+    return playBingo(remainingBoards, remainingNumbers, winnerOrLoser);
+  }
+}
