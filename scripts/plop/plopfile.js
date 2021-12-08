@@ -43,23 +43,13 @@ module.exports = function runPlop(plop) {
       },
       {
         type: 'add',
-        path: join(projectSrc, 'day{{day}}/part1-input'),
-        templateFile: 'templates/day/part1-input.hbs',
+        path: join(projectSrc, 'day{{day}}/input'),
+        templateFile: 'templates/day/input.hbs',
       },
       {
         type: 'add',
-        path: join(projectSrc, 'day{{day}}/part1-input-example'),
-        templateFile: 'templates/day/part1-input-example.hbs',
-      },
-      {
-        type: 'add',
-        path: join(projectSrc, 'day{{day}}/part2-input'),
-        templateFile: 'templates/day/part2-input.hbs',
-      },
-      {
-        type: 'add',
-        path: join(projectSrc, 'day{{day}}/part2-input-example'),
-        templateFile: 'templates/day/part2-input-example.hbs',
+        path: join(projectSrc, 'day{{day}}/input-example'),
+        templateFile: 'templates/day/input-example.hbs',
       },
     ],
   });

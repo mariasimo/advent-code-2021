@@ -4,15 +4,12 @@
   "description": "Advent of Code 2021 <adventofcode.com/2021>",
   "main": "index.js",
   "config": {
-    "day": "3"
+    "day": "4"
   },
   "scripts": {
-    "test": "jest",
     "develop": "jest --watch src/day$npm_package_config_day/index.test.js",
-    "build": "tsc --build",
-    "solution": "npm run build && node build/src/day$npm_package_config_day",
     "solution:dev": "ts-node-dev --respawn --transpile-only --quiet --clear src/day$npm_package_config_day",
-    "solutions:log": "npm run build && node build/src",
+    "solutions:log": "ts-node-dev build/src",
     "plop": "plop --plopfile scripts/plop/plopfile.js"
   },
   "keywords": [

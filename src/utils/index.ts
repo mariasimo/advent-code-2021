@@ -3,18 +3,13 @@ import { readFileSync } from 'fs';
 
 type ReadInputProps = {
   dayNumber: string | number;
-  partNumber?: string | number;
   isExample?: boolean;
 };
 
-export const readInput = ({
-  dayNumber,
-  partNumber = 1,
-  isExample,
-}: ReadInputProps): string => {
+export const readInput = ({ dayNumber, isExample }: ReadInputProps): string => {
   const path = isExample
-    ? `./src/day${dayNumber}/part${partNumber}-input-example`
-    : `./src/day${dayNumber}/part${partNumber}-input`;
+    ? `./src/day${dayNumber}/input-example`
+    : `./src/day${dayNumber}/input`;
 
   const input = readFileSync(path, 'utf8');
   return input;
@@ -22,10 +17,9 @@ export const readInput = ({
 
 export const readInputAsArray = ({
   dayNumber,
-  partNumber = 1,
   isExample,
 }: ReadInputProps): string[] => {
-  const input = readInput({ dayNumber, partNumber, isExample });
+  const input = readInput({ dayNumber, isExample });
   return input.split('\n');
 };
 
