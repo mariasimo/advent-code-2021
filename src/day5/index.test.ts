@@ -1,16 +1,30 @@
 import { readInputAsArray } from '../utils';
-import { generateDiagram, parseToLines } from './logic';
+import {
+  filterDiagonalLines,
+  generateDiagram,
+  parseToLines,
+  registerLinesInDiagram,
+  countOverlappingLines,
+  findLargestValue,
+} from './logic';
 
 const input = readInputAsArray({ dayNumber: 5, isExample: true });
+const lines = parseToLines(input);
+const diagonalLine = [
+  [8, 0],
+  [0, 8],
+];
+const diagramTestLine = [2, 2, 2, 1, 1, 1, null, null, null, null];
+const registeredLines = registerLinesInDiagram(lines);
 
 describe('Day 5: Hydrothermal Venture', () => {
   describe('Generic', () => {
     describe('Parse Input', () => {
       test('Return an array', () => {
-        expect(parseToLines(input)).toEqual(expect.any(Array));
+        expect(lines).toEqual(expect.any(Array));
       });
       test('Create array of lines', () => {
-        expect(parseToLines(input)[0]).toEqual([
+        expect(lines[0]).toEqual([
           [0, 9],
           [5, 9],
         ]);
@@ -21,7 +35,32 @@ describe('Day 5: Hydrothermal Venture', () => {
         expect(generateDiagram(9, 9)).toEqual(expect.any(Array));
       });
       test('Generate 2d array for register lines', () => {
-        expect(generateDiagram(3, 3)[0]).toEqual(['.', '.', '.']);
+        expect(generateDiagram(3, 3)[0]).toEqual([null, null, null]);
+      });
+    });
+    describe('Filter diagonal lines', () => {
+      test('Return an array with less items than the input', () => {
+        expect(filterDiagonalLines(lines).length).toBeLessThan(lines.length);
+      });
+      test('Does not contain diagonal lines', () => {
+        expect(filterDiagonalLines(lines)).toEqual(
+          expect.not.arrayContaining(diagonalLine),
+        );
+      });
+    });
+    describe('Register lines in diagram', () => {
+      test('Return correct last line as per example', () => {
+        expect(registeredLines[9]).toStrictEqual(diagramTestLine);
+      });
+    });
+    describe('Count number of overlapping lines', () => {
+      test('Return correct number of overlapping lines', () => {
+        expect(countOverlappingLines(registeredLines)).toBe(5);
+      });
+    });
+    describe('Count number of overlapping lines', () => {
+      test('Return correct number of overlapping lines', () => {
+        expect(findLargestValue(lines, 'x')).toBe(9);
       });
     });
   });
