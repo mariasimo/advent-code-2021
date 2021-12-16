@@ -3,6 +3,7 @@ import {
   parseInput,
   getIncorrectChar,
   calculateIncorrectCharsScore,
+  findCompletionString,
 } from './logic';
 
 const input = readInputAsArray({ dayNumber: 10, isExample: true });
@@ -24,13 +25,30 @@ describe('Day10:Syntax Scoring', () => {
   });
   describe('Part 1', () => {
     describe('Get incorrect character', () => {
-      test("Given a line, hould return the first character which doesn't match", () => {
+      test("Given a corrupted line, should return the first character which doesn't match", () => {
+        expect(getIncorrectChar('[{[{({}]{}}([{[{{{}}([]'.split(''))).toBe(']');
+      });
+    });
+    describe('Get incorrect character', () => {
+      test("Given a corrupted line, should return the first character which doesn't match", () => {
         expect(getIncorrectChar(parsedInput[2])).toBe('}');
       });
     });
+    describe('Get incorrect character', () => {
+      test('Given a incomplete line, should return a nullish value', () => {
+        expect(getIncorrectChar(parsedInput[0])).toBeUndefined();
+      });
+    });
     describe('Calculate incorrect characters score', () => {
-      test('Given an array of lines, get incorrect characters at corrupted lines, and calculate the sum of its scores', () => {
+      test('Given an array of lines, get incorrect characters at corrupted lines, and return the sum of its scores', () => {
         expect(calculateIncorrectCharsScore(parsedInput)).toBe(26397);
+      });
+    });
+  });
+  describe('Part 2', () => {
+    describe('Find completion string', () => {
+      test('Given a line, should return string on missing closing characters', () => {
+        expect(findCompletionString(parsedInput[0])).toBe('}}]])})]');
       });
     });
   });

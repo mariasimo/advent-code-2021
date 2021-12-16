@@ -16,30 +16,29 @@ const scores: { [openChar: string]: number } = {
   '>': 25137,
 };
 
+const isClosingChar = (char: string) => Object.values(pairs).includes(char);
+
+const isPair = (openChar: string, closeChar: string) =>
+  pairs[openChar] === closeChar;
+
 export const getIncorrectChar = (line: string[]) => {
-  const isClosingChar = (char: string) => Object.values(pairs).includes(char);
-  const isPair = (openChar: string, closeChar: string) =>
-    pairs[openChar] === closeChar;
+  const removePairs: string[] = [];
 
-  let incorrectChar: string = '';
-
-  const findIncorrectCharInLine = (line: string[]) => {
-    for (const index in line) {
-      if (isClosingChar(line[index])) {
-        if (!isPair(line[+index - 1], line[index])) {
-          incorrectChar = line[index];
-        } else {
-          line.splice(+index - 1, 2);
-          findIncorrectCharInLine(line);
-        }
-      }
-      if (incorrectChar) {
-        break;
-      }
+  line.forEach((char) => {
+    if (
+      isClosingChar(char) &&
+      isPair(removePairs[removePairs.length - 1], char)
+    ) {
+      removePairs.pop();
+    } else {
+      removePairs.push(char);
     }
-  };
+  });
 
-  findIncorrectCharInLine(line);
+  const incorrectChar = removePairs.find((char) =>
+    Object.values(pairs).includes(char),
+  );
+
   return incorrectChar;
 };
 
@@ -48,6 +47,30 @@ export const calculateIncorrectCharsScore = (lines: string[][]) => {
     .map((line) => getIncorrectChar(line))
     .filter(Boolean);
 
-  const score = incorrectChars.reduce((total, char) => total + scores[char], 0);
+  const score = incorrectChars.reduce(
+    (total, char) => total + scores[char as string],
+    0,
+  );
   return score;
+};
+
+// [({(<(())[]>[[{[]{<()<>>
+
+export const findCompletionString = (line: string[]) => {
+  const opennings: string[] = [];
+  line.forEach((char, index) => {
+    if (!isClosingChar(char) && !isPair(char, line[index + 1])) {
+      opennings.push(char);
+    } else if (
+      isClosingChar(char) &&
+      char === pairs[opennings[opennings.length - 1]]
+    ) {
+      opennings.pop();
+    }
+  });
+
+  return opennings
+    .map((i) => pairs[i])
+    .reverse()
+    .join('');
 };
