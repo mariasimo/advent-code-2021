@@ -21,7 +21,7 @@ const isClosingChar = (char: string) => Object.values(pairs).includes(char);
 const isPair = (openChar: string, closeChar: string) =>
   pairs[openChar] === closeChar;
 
-export const getIncorrectChar = (line: string[]) => {
+export const filterInmediatePairs = (line: string[]) => {
   const removePairs: string[] = [];
 
   line.forEach((char) => {
@@ -35,7 +35,13 @@ export const getIncorrectChar = (line: string[]) => {
     }
   });
 
-  const incorrectChar = removePairs.find((char) =>
+  return removePairs;
+};
+
+export const getIncorrectChar = (line: string[]) => {
+  const filteredLine = filterInmediatePairs(line);
+
+  const incorrectChar = filteredLine.find((char) =>
     Object.values(pairs).includes(char),
   );
 
@@ -54,23 +60,11 @@ export const calculateIncorrectCharsScore = (lines: string[][]) => {
   return score;
 };
 
-// [({(<(())[]>[[{[]{<()<>>
-
 export const findCompletionString = (line: string[]) => {
-  const opennings: string[] = [];
-  line.forEach((char, index) => {
-    if (!isClosingChar(char) && !isPair(char, line[index + 1])) {
-      opennings.push(char);
-    } else if (
-      isClosingChar(char) &&
-      char === pairs[opennings[opennings.length - 1]]
-    ) {
-      opennings.pop();
-    }
-  });
+  const filteredLine = filterInmediatePairs(line);
 
-  return opennings
-    .map((i) => pairs[i])
+  return filteredLine
+    .map((i: string) => pairs[i])
     .reverse()
     .join('');
 };
