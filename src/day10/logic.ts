@@ -1,19 +1,8 @@
+import { pairs, part1Scores, part2Scores } from './constants';
+import { notEmpty } from './types';
+
 export const parseInput = (input: string[]) => {
   return input.map((line) => line.split(''));
-};
-
-const pairs: { [openChar: string]: string } = {
-  '(': ')',
-  '[': ']',
-  '{': '}',
-  '<': '>',
-};
-
-const scores: { [openChar: string]: number } = {
-  ')': 3,
-  ']': 57,
-  '}': 1197,
-  '>': 25137,
 };
 
 const isClosingChar = (char: string) => Object.values(pairs).includes(char);
@@ -54,7 +43,7 @@ export const calculateIncorrectCharsScore = (lines: string[][]) => {
     .filter(Boolean);
 
   const score = incorrectChars.reduce(
-    (total, char) => total + scores[char as string],
+    (total, char) => total + part1Scores[char as string],
     0,
   );
   return score;
@@ -63,8 +52,32 @@ export const calculateIncorrectCharsScore = (lines: string[][]) => {
 export const findCompletionString = (line: string[]) => {
   const filteredLine = filterInmediatePairs(line);
 
+  const isCorruptedLine = filteredLine.some((char) =>
+    Object.values(pairs).includes(char),
+  );
+
+  if (isCorruptedLine) return; // the input was invalid, return
+
   return filteredLine
     .map((i: string) => pairs[i])
     .reverse()
     .join('');
+};
+
+export const scoreCompletionString = (s: string) => {
+  return s.split('').reduce((total, char) => total * 5 + part2Scores[char], 0);
+};
+
+export const calculateCompletionStringsScore = (lines: string[][]): number => {
+  const completionStrings = lines
+    .map((line) => findCompletionString(line))
+    .filter(notEmpty);
+
+  const scores: number[] = completionStrings
+    .map((s) => scoreCompletionString(s))
+    .sort((a, b) => b - a);
+
+  const middleIndex = Math.floor(scores.length / 2);
+
+  return scores[middleIndex];
 };
