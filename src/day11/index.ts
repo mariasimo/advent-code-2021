@@ -1,11 +1,11 @@
 import { logResults, readInputAsArray } from '../utils';
-import { parseInput, simulateMultipleSteps } from './logic';
+import { getSyncStep, parseInput, simulateMultipleSteps } from './logic';
 
 const input = readInputAsArray({ dayNumber: 11 });
 const parsedInput = parseInput(input);
 
 const outputPart1 = simulateMultipleSteps(parsedInput, 100);
-const outputPart2 = 0;
+const outputPart2 = getSyncStep(parsedInput);
 
 logResults(11, [outputPart1, outputPart2]);
 

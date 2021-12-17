@@ -1,5 +1,10 @@
 import { readInputAsArray } from '../utils';
-import { parseInput, simulateStep, simulateMultipleSteps } from './logic';
+import {
+  parseInput,
+  simulateStep,
+  simulateMultipleSteps,
+  getSyncStep,
+} from './logic';
 
 const input = readInputAsArray({ dayNumber: 11, isExample: true });
 const parsedInput = parseInput(input);
@@ -36,6 +41,13 @@ describe('Day11: Dumbo Octopus', () => {
     describe('Simulate 100 steps', () => {
       test('Should return flashes counted after a given number of steps', () => {
         expect(simulateMultipleSteps(parsedInput, 100)).toEqual(1656);
+      });
+    });
+  });
+  describe('Part 2', () => {
+    describe('Get synchronizing step', () => {
+      test('Should return the step after which all values of array are 0', () => {
+        expect(getSyncStep(parsedInput)).toEqual(195);
       });
     });
   });

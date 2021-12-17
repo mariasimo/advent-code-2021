@@ -82,7 +82,7 @@ export const simulateStep = (
 export const simulateMultipleSteps = (
   octopus: (number | string)[][],
   steps: number,
-) => {
+): number => {
   let flashes = 0;
   let count = 0;
   let octopusCopy = [...octopus];
@@ -99,4 +99,19 @@ export const simulateMultipleSteps = (
   }
 
   return flashes;
+};
+
+export const getSyncStep = (octopus: (number | string)[][]): number => {
+  let flashes = 0;
+  let count = 0;
+  let octopusCopy = [...octopus];
+
+  do {
+    const { incrementedOctopus } = simulateStep(octopusCopy, flashes);
+    octopusCopy = incrementedOctopus;
+
+    count++;
+  } while (octopusCopy.flat().find((o) => o !== 0));
+
+  return count;
 };
