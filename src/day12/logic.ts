@@ -24,8 +24,9 @@ export const createAdjacencyList = (input: string[][]): AdjacencyList => {
   return adjacencyList;
 };
 
-export const findPaths = (adjacencyList: AdjacencyList) => {
+export const findPathsPart1 = (input: string[][]) => {
   const paths: string[][] = [];
+  const adjacencyList = createAdjacencyList(input);
 
   function findPath(node: string, visited: string[], paths: string[][]) {
     visited.push(node);
@@ -34,17 +35,60 @@ export const findPaths = (adjacencyList: AdjacencyList) => {
       paths.push(visited);
     }
 
-    for (const neighbour of adjacencyList[node]) {
-      if (
-        neighbour !== neighbour.toLowerCase() ||
-        !visited.includes(neighbour)
-      ) {
-        findPath(neighbour, [...visited], paths);
+    for (const adjacent of adjacencyList[node]) {
+      if (adjacent !== adjacent.toLowerCase() || !visited.includes(adjacent)) {
+        findPath(adjacent, [...visited], paths);
       }
     }
   }
 
   findPath('start', [], paths);
+
+  return paths;
+};
+
+export const findPathsPart2 = (input: string[][]) => {
+  const paths: string[][] = [];
+  const adjacencyList = createAdjacencyList(input);
+
+  const isExit = (cave: string) => cave === 'start' || cave === 'end';
+  const isSmallCave = (cave: string) =>
+    cave === cave.toLowerCase() && !isExit(cave);
+
+  function findPath(
+    node: string,
+    visited: string[],
+    smallCaveVisitedTwice: boolean,
+    paths: string[][],
+  ) {
+    visited.push(node);
+
+    if (node === 'end') {
+      paths.push(visited);
+      return;
+    }
+
+    for (const adjacent of adjacencyList[node]) {
+      if (isExit(adjacent) && visited.includes(adjacent)) {
+        continue;
+      }
+
+      if (isSmallCave(adjacent) && visited.includes(adjacent)) {
+        if (smallCaveVisitedTwice) {
+          continue;
+        }
+
+        if (visited.filter((c) => c === adjacent).length >= 2) {
+          continue;
+        }
+        findPath(adjacent, [...visited], true, paths);
+      } else {
+        findPath(adjacent, [...visited], smallCaveVisitedTwice, paths);
+      }
+    }
+  }
+
+  findPath('start', [], false, paths);
 
   return paths;
 };
