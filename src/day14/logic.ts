@@ -1,4 +1,4 @@
-import { Rule } from './types';
+import { Inventory, Rule } from './types';
 
 export const parseInput = (input: string[]) => {
   const template = input.splice(0, 1)[0];
@@ -78,59 +78,50 @@ export const getPolymerElementsDifference = (
   );
 };
 
-type Inventory = { [pair: string]: number };
-
 export const countPolymerElements = (
   template: string,
   rules: Rule[],
   steps: number,
 ) => {
-  const total = 40;
   let rest = '';
 
-  const initialInventory = template
-    .split('')
-    .reduce((i: Inventory, letter, index, self) => {
-      const nextLetter = self[index + 1];
+  const incrementMapKeyValue = (
+    key: string,
+    value: number,
+    map: Map<string, number>,
+  ) => map.set(key, (map.get(key) ?? 0) + value);
 
-      const pair = nextLetter && letter + nextLetter;
-      if (!nextLetter) {
-        rest = letter;
-      } else {
-        i[pair] = i[pair] ? i[pair] + 1 : 1;
-      }
+  const initialInventory: Inventory = new Map();
+  template.split('').forEach((letter, index, self) => {
+    const nextLetter = self[index + 1];
 
-      return i;
-    }, {});
-
-  const findRule = (pair: string) => rules.find((r) => r.pair === pair);
+    const pair = nextLetter && letter + nextLetter;
+    if (!nextLetter) {
+      rest = letter;
+    } else {
+      incrementMapKeyValue(pair, 1, initialInventory);
+    }
+  });
 
   const trackInventory = (inventory: Inventory): Inventory => {
-    return Object.keys(inventory).reduce((updated: Inventory, pair) => {
+    const updated: Inventory = new Map();
+    const findRule = (pair: string) => rules.find((r) => r.pair === pair);
+
+    for (const [pair, count] of inventory) {
       const insertion = findRule(pair)?.insertion;
       const [n1, n2] = pair.split('');
       const pair1 = n1 + insertion;
       const pair2 = insertion + n2;
 
-      if (inventory[pair] === 1) {
-        updated[pair1] = updated[pair1] ? updated[pair1] + 1 : 1;
-        updated[pair2] = updated[pair2] ? updated[pair2] + 1 : 1;
-      } else {
-        for (let i = 0; i < inventory[pair]; i++) {
-          updated[pair1] = updated[pair1] ? updated[pair1] + 1 : 1;
-          updated[pair2] = updated[pair2] ? updated[pair2] + 1 : 1;
-        }
-      }
+      incrementMapKeyValue(pair1, count, updated);
+      incrementMapKeyValue(pair2, count, updated);
+    }
 
-      return updated;
-    }, {});
+    return updated;
   };
 
-  const trackPairs = (step: number, inventory: Inventory): any => {
-    if (step === total) {
-      return inventory;
-    }
-    console.log(step, inventory);
+  const trackPairs = (step: number, inventory: Inventory): Inventory => {
+    if (step === steps) return inventory;
 
     const updatedStep = step + 1;
     const updatedInventory = trackInventory(inventory);
@@ -139,25 +130,24 @@ export const countPolymerElements = (
   };
 
   const countInventory = (inventory: Inventory) => {
-    const string =
-      Object.keys(inventory)
-        .map((pair) => pair[0].repeat(inventory[pair]))
-        .join('') + rest;
+    const letterCount = new Map();
+    inventory.forEach(function (count, pair) {
+      incrementMapKeyValue(pair[0], count, letterCount);
+    });
 
-    return string.split('').reduce((inventory: Inventory, element) => {
-      if (inventory[element]) {
-        inventory[element] += 1;
-      }
-      if (element && !inventory[element]) {
-        inventory[element] = 1;
-      }
+    incrementMapKeyValue(rest, rest.length, letterCount);
 
-      return inventory;
-    }, {});
+    return letterCount;
   };
 
   const inventory = trackPairs(0, initialInventory);
   const inventoryCount = countInventory(inventory);
 
-  console.log(inventoryCount);
+  const elementsCountValues = [...inventoryCount]
+    .map((item) => item[1])
+    .sort((a, b) => b - a);
+
+  return (
+    elementsCountValues[0] - elementsCountValues[elementsCountValues.length - 1]
+  );
 };
